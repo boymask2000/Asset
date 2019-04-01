@@ -28,7 +28,7 @@ public class AssetDAO {
 	        } finally {
 	            session.close();
 	        }
-	        System.out.println("selectAll() --> "+list);
+	    
 	        return list;
 	 
 	    }

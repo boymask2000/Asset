@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<style type="text/css">
+.value {
+	font-weight: bold;
+}
+
+.ui-datatable {
+	margin-bottom: 25px
+}
+
+.ui-datatable .ui-datatable-footer {
+	text-align: left;
+}
+
+.ui-datalist ul {
+	padding: 0 0 0 10px;
+	margin: 5px 0;
+}
+
+.ui-datatable .ui-button-icon-only .ui-button-text {
+	padding: 0;
+	line-height: 1.2;
+}
+</style>
+<h1>Gestione utenti</h1>
+<h:form id="form">
+	<p:growl id="msgs" showDetail="true" />
+	<p:outputLabel value="Gestione utenti"></p:outputLabel>
+
+	<p:dataTable id="radioDT" value="#{managedUtentiBean.allUtenti}"
+		var="c" selection="#{dtSelectionView.selectedUser}"
+		rowKey="#{c.username}">
+		<p:column selectionMode="single" style="width:16px;text-align:center" />
+
+		<p:column headerText="Username">
+			<h:outputText value="#{c.username}" />
+		</p:column>
+
+		<p:column headerText="Tipo">
+			<h:outputText value="#{c.tipo}" />
+		</p:column>
+
+		<p:column headerText="Descrizione">
+			<h:outputText value="#{c.descrizione}" />
+		</p:column>
+
+		<f:facet name="footer">
+			<p:commandButton process="radioDT" update=":form:carDetail"
+				icon="pi pi-search" value="View" oncomplete="PF('carDialog').show()" />
+		</f:facet>
+	</p:dataTable>
+	<p:dataTable id="singleDT" value="#{managedUtentiBean.allUtenti}"
+		var="c" selectionMode="single"
+		selection="#{dtSelectionView.selectedUser}" rowKey="#{c.username}">
+
+		<p:ajax event="rowSelect" listener="#{dtSelectionView.onRowSelect}"
+			update=":form:msgs" />
+		<p:ajax event="rowUnselect"
+			listener="#{dtSelectionView.onRowUnselect}" update=":form:msgs" />
+
+		<p:column headerText="Username">
+			<h:outputText value="#{c.username}" />
+		</p:column>
+
+		<p:column headerText="Tipo">
+			<h:outputText value="#{c.tipo}" />
+		</p:column>
+
+		<p:column headerText="Descrizione">
+			<h:outputText value="#{c.descrizione}" />
+		</p:column>
+
+		<!-- 		<f:facet name="footer"> -->
+		<!-- 			<p:commandButton process="singleDT" update=":form:carDetail" -->
+		<!-- 				icon="pi pi-search" value="View" oncomplete="PF('carDialog').show()" /> -->
+		<!-- 		</f:facet> -->
+	</p:dataTable>
+	<p:panel id="basic" header="Basic" footer="Movie Details"
+		style="margin-bottom:20px">
+		<h:panelGrid columns="2" cellpadding="10">
+
+
+			<p:dataTable id="pag" value="#{managedUtentiBean.allUtenti}"
+				var="employee" paginator="true" rows="5"
+				paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+				<p:column headerText="Username">
+
+					<h:outputText value="#{employee.username}" />
+				</p:column>
+				<p:column headerText="Tipo">
+
+					<h:outputText value="#{employee.tipo}" />
+				</p:column>
+				<p:column headerText="Descrizione">
+
+					<h:outputText value="#{employee.descrizione}" />
+				</p:column>
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update=":form:carDetail"
+						oncomplete="PF('utenteDialog').show()" icon="pi pi-search"
+						title="View">
+						<f:setPropertyActionListener value="#{employee}"
+							target="#{dtSelectionView.selectedUser}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:dialog header="Info Utente" widgetVar="utenteDialog" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false" rendered="#{not empty dtSelectionView.selectedUser}">
+				<h:form>
+				<p:growl id="msgs" showDetail="true" />
+					<h:outputText value="Username:" />
+					<h:outputText value="#{dtSelectionView.selectedUser.username}" />
+<p></p>
+					<h:outputText value="Tipo" />
+					<h:inputText value="#{dtSelectionView.selectedUser.tipo}" />
+<p></p>
+					<h:outputText value="Email" />
+					<h:inputText value="#{dtSelectionView.selectedUser.email}" />
+<p></p>
+					<h:outputText value="Descrizione:" />
+					<h:inputText value="#{dtSelectionView.selectedUser.descrizione}" />
+
+   <p:commandButton value="Update" id="update" update="msgs"
+    action="#{managedUtentiBean.update(dtSelectionView.selectedUser)}" style="margin-right:20px;" styleClass="ui-priority-primary" />
+ 
+				</h:form>
+			</p:dialog>
+
+			<p:dialog header="Info Utente" widgetVar="carDialog" modal="true"
+				showEffect="fade" hideEffect="fade" resizable="false">
+				<p:outputPanel id="carDetail" style="text-align:center;">
+					<p:panelGrid columns="2"
+						rendered="#{not empty dtSelectionView.selectedUser}"
+						columnClasses="label,value">
+
+
+						<h:outputText value="Username:" />
+						<h:outputText value="#{dtSelectionView.selectedUser.username}" />
+
+						<h:outputText value="Tipo" />
+						<h:outputText value="#{dtSelectionView.selectedUser.tipo}" />
+
+						<h:outputText value="Email" />
+						<h:outputText value="#{dtSelectionView.selectedUser.email}" />
+
+						<h:outputText value="Descrizione:" />
+						<h:outputText value="#{dtSelectionView.selectedUser.descrizione}" />
+
+
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:dialog>
+		</h:panelGrid>
+	</p:panel>
+</h:form>
+</html>
