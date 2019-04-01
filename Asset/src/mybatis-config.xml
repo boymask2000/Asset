@@ -4,9 +4,9 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
  
 <configuration>
-    <typeAliases>
-        <typeAlias alias="Person" type="com.hmkcode.vo.Person"/>        
-    </typeAliases>
+<!--     <typeAliases> -->
+<!--         <typeAlias alias="Person" type="com.hmkcode.vo.Person"/>         -->
+<!--     </typeAliases> -->
  
     <environments default="development">
         <environment id="development">
@@ -14,13 +14,13 @@
             <!--  connecting to Local MySql -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://localhost:3306/test1"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/test1?serverTimezone=UTC"/>
                 <property name="username" value="root"/>
                 <property name="password" value="zaq12wsx"/>
             </dataSource>
        </environment>
     </environments>
     <mappers>
-       <mapper resource="apper/asset.xml"/>
+       <mapper resource="mapper/asset.xml"/>
     </mappers>
 </configuration>

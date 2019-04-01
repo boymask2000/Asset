@@ -8,7 +8,7 @@
     </resultMap>
  
     <select id="selectAll" resultMap="result">
-        SELECT * FROM asset;
+        SELECT * FROM test1.asset;
     </select>
     
 </mapper>
